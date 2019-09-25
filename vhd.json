@@ -2,41 +2,42 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "diskName": {
-            "type": "string",
-            "defaultValue": "DataDiskUus"
-        },
+      
         "location": {
             "type": "string",
             "defaultValue": "[resourceGroup().location]"
-        },
-        "diskSize": {
-            "type": "int",
-            "defaultValue": 1024,
-            "allowedValues": [
-                1024,
-                2048,
-                4096
-            ]
+        }
+        
+        
+        
+    },
+    "variables": {
+        "InterfaceName": {
+            "type": "string",
+            "defaultValue": "Nic1"
         }
     },
-    "functions": [
+    "resources": [
         {
-            "namespace": "miradore",
-            "members": {
-                "uniqueName": {
-                    "parameters": [
-                        {
-                            "name": "diskName",
-                            "type": "string"
+            "apiVersion": "2017-08-01",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('InterfaceName')]",
+            "location":"[parameters('location')]",
+            "properties": {
+                "ipConfigurations":[
+                    {
+                    "name":"ipconfig1",
+                    "properties": {
+                        "privateIPAllocationMethod":"Dynamic",
+                        "subnet":{
+                            "id": "[variables('subid')]"
+                            }
+
                         }
-                    ],
-                    "output": {
-                        "type": "string",
-                        "value": "[toLower(parameters('diskName'))]"
                     }
-                }
+                ]
             }
         }
     ]
+    
 }
