@@ -4,7 +4,7 @@
     "parameters": {
         "diskName": {
             "type": "string",
-            "defaultValue": "DataDisk"
+            "defaultValue": "DataDiskUus"
         },
         "location": {
             "type": "string",
@@ -36,21 +36,6 @@
                         "value": "[toLower(parameters('diskName'))]"
                     }
                 }
-            }
-        }
-    ],
-    "resources": [
-        {
-            "apiVersion": "2018-09-30",
-            "type": "Microsoft.Compute/disks",
-            "location": "[parameters('location')]",
-            "name": "[miradore.uniqueName(parameters('diskName'))]",
-            "properties": {
-                "CreationData": {
-                    "createOption": "empty"
-                },
-                "diskSizeGB": "[parameters('diskSize')]",
-                "osType": "Windows"
             }
         }
     ]
