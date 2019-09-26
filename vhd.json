@@ -6,31 +6,51 @@
         "location": {
             "type": "string",
             "defaultValue": "[resourceGroup().location]"
+        },
+
+        "publicIPAddressType": {
+            "type": "string",
+            "defaultValue": "Dynamic",
+            "allowedValues": [
+              "Dynamic",
+              "Static"
+            ],
+            "metadata": {
+                "description": "Type of public IP address"
+            }
+        },
+
+        "subnetPrefix":{
+            "type": "string",
+            "defaultValue": "10.0.0.0/24",
+            "metadata": {
+                "description":"Subnet prefix"
+            }
         }
         
         
         
     },
     "variables": {
-        "InterfaceName": {
-            "type": "string",
-            "defaultValue": "Nic1"
-        }
+        "subnetName": "subnet1",
+        "virtualNetworkName":"Vnet2",
+        "nicName": "networkInterface1",
+        "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
     },
     "resources": [
         {
-            "apiVersion": "2017-08-01",
+            "apiVersion": "2018-10-01",
             "type": "Microsoft.Network/networkInterfaces",
-            "name": "[variables('InterfaceName')]",
+            "name": "[variables('nicName')]",
             "location":"[parameters('location')]",
             "properties": {
                 "ipConfigurations":[
                     {
                     "name":"ipconfig1",
                     "properties": {
-                        "privateIPAllocationMethod":"Dynamic",
+                        "privateIPAllocationMethod":"[parameters('publicIPAddressType')]",
                         "subnet":{
-                            "id": "[variables('subid')]"
+                            "id": "[variables('subnetRef')]"
                             }
 
                         }
@@ -38,6 +58,7 @@
                 ]
             }
         }
+
     ]
     
 }
