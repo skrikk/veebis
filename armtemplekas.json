@@ -11,10 +11,18 @@
         },
         "vnetPrefix": {
            "type": "string",
-           "defaultValue": "10.0.0.0/24",
+           "defaultValue": "10.0.0.0/16",
            "metadata": {
                 "description": "description"
             }
+        },
+
+        "location":{
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "allowedValues": ["[resourceGroup().location]",
+            "WestUS",
+            "westeurope"]
         }
     },
     "variables": {
@@ -28,7 +36,7 @@
             "name": "[variables('Vnetname')]",
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2018-08-01",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "tags": {
                 "displayName": "virtualNetwork1"
             },
@@ -52,7 +60,7 @@
             "name": "[variables('subnetname')]",
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2018-08-01",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('location')]",
             "tags": {
                 "displayName": "networkInterface1"
             },
